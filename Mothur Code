@@ -1,0 +1,90 @@
+make.file(inputdir=D:\PSU\04222024, type=gz, prefix=stability)
+
+make.contigs(file=stability.files)
+
+summary.seqs(fasta=stability.trim.contigs.fasta, count=stability.contigs.count_table)
+
+screen.seqs(fasta=stability.trim.contigs.fasta, count=stability.contigs.count_table, maxambig=0, maxlength=300, maxhomop=8)
+
+get.current()
+
+summary.seqs(fasta=stability.trim.contigs.good.fasta, count=stability.contigs.good.count_table)
+
+unique.seqs(fasta=stability.trim.contigs.good.fasta, count=stability.contigs.good.count_table)
+
+summary.seqs(count=stability.trim.contigs.good.count_table)
+
+
+pcr.seqs(fasta=silva.bacteria.fasta, start=11895, end=25318, keepdots=F)
+
+rename.file(input=silva.bacteria.pcr.fasta, new=silva.v4.fasta)
+
+summary.seqs(fasta=silva.v4.fasta)
+
+align.seqs(fasta=stability.trim.contigs.good.unique.fasta, reference=silva.v4.fasta)
+
+D:\PSU\04222024\stability.trim.contigs.good.unique.align
+D:\PSU\04222024\stability.trim.contigs.good.unique.align_report
+D:\PSU\04222024\stability.trim.contigs.good.unique.flip.accnos
+
+summary.seqs(fasta=stability.trim.contigs.good.unique.align, count=stability.trim.contigs.good.count_table)
+
+screen.seqs(fasta=stability.trim.contigs.good.unique.align, count=stability.trim.contigs.good.count_table, start=1968, end=11550)
+
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.align
+D:\PSU\04222024\stability.trim.contigs.good.unique.bad.accnos
+D:\PSU\04222024\stability.trim.contigs.good.good.count_table
+
+
+filter.seqs(fasta=stability.trim.contigs.good.unique.good.align, vertical=T, trump=.)
+
+D:\PSU\04222024\stability.filter
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.fasta
+
+
+unique.seqs(fasta=stability.trim.contigs.good.unique.good.filter.fasta, count=stability.trim.contigs.good.good.count_table)
+
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.fasta
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.count_table
+
+pre.cluster(fasta=stability.trim.contigs.good.unique.good.filter.unique.fasta, count=stability.trim.contigs.good.unique.good.filter.count_table, diffs=2)
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.fasta
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.count_table
+
+chimera.vsearch(fasta=stability.trim.contigs.good.unique.good.filter.unique.precluster.fasta, count=stability.trim.contigs.good.unique.good.filter.unique.precluster.count_table, dereplicate=t)
+
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.count_table
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.chimeras
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.accnos
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.fasta
+
+summary.seqs(fasta=stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.fasta, count=stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.count_table)
+
+classify.seqs(fasta=stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.fasta, count=stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.count_table, reference=trainset9_032012.pds.fasta, taxonomy=trainset9_032012.pds.tax)
+
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.taxonomy
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.tax.summary
+
+remove.lineage(fasta=stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.fasta, count=stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.count_table, taxonomy=stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.taxonomy, taxon=Chloroplast-Mitochondria-unknown-Archaea-Eukaryota)
+
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.pick.taxonomy
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.accnos
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.count_table
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta
+
+summary.tax(taxonomy=current, count=current)
+
+dist.seqs(fasta=stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.fasta, cutoff=0.03)
+
+D:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pick.dist
+
+
+make.shared(inputdir=H:\PSU\04222024, count=stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.count_table)
+
+H:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.asv.list
+H:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.asv.shared
+
+classify.otu(list=stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.asv.list, count=stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.count_table, taxonomy=stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.pds.wang.pick.taxonomy, label=ASV)
+
+H:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.asv.ASV.cons.taxonomy
+H:\PSU\04222024\stability.trim.contigs.good.unique.good.filter.unique.precluster.denovo.vsearch.asv.ASV.cons.tax.summary
